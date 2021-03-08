@@ -32,16 +32,38 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	public void setCenterY(double centerY) {
 		this.centerY = centerY;	
 	}
+	
+	public double getHeight() {
+		double height = getHeight();
+		return height;
+	}
 
-	@Override
+	public double getWidth() {
+		double width = getWidth();
+		return width;
+	}
+	
+	public double getMinX() {
+		return centerX - (getWidth() / 2);
+	}
+
+	public double getMaxX() {
+		return centerX + (getWidth() / 2);
+	}
+
+	public double getMinY() {
+		return centerY - (getHeight() / 2);
+	}
+
+	public double getMaxY() {
+		return centerY - (getHeight() / 2);
+	}
+
 	public void moveX(double pixelsPerSecond) {
-		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void moveY(double pixelsPerSecond) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -61,40 +83,6 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	public boolean getVisible() {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public double getMinX() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double getMaxX() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double getMinY() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double getMaxY() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public double getHeight() {
-		double height = getHeight();
-		return height;
-	}
-
-	public double getWidth() {
-		double width = getWidth();
-		return width;
 	}
 
 	public double getCenterX() {
