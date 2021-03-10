@@ -7,9 +7,12 @@ import javax.imageio.ImageIO;
 public class APMSprite implements DisplayableSprite, MovableSprite {
 
 	Image image = null;
-	
 	double centerX = 0;
 	double centerY = 0;
+	double height = 50;
+	double width = 50;
+	double velocityX = 0;
+	double velocityY = 0;
 	
 	public APMSprite() {
 		super();
@@ -24,9 +27,8 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 		}		
 	}
 
-	
 	public void setCenterX(double centerX) {
-		this.centerX = centerX;		
+		this.centerX = centerX;	
 	}
 
 	public void setCenterY(double centerY) {
@@ -34,55 +36,47 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	}
 	
 	public double getHeight() {
-		double height = getHeight();
 		return height;
 	}
 
 	public double getWidth() {
-		double width = getWidth();
 		return width;
-	}
-	
-	public double getMinX() {
-		return centerX - (getWidth() / 2);
-	}
-
-	public double getMaxX() {
-		return centerX + (getWidth() / 2);
-	}
-
-	public double getMinY() {
-		return centerY - (getHeight() / 2);
-	}
-
-	public double getMaxY() {
-		return centerY - (getHeight() / 2);
-	}
+	}	
 
 	public void moveX(double pixelsPerSecond) {
-		
+		centerX = centerX + pixelsPerSecond / 60;
 	}
 
 	public void moveY(double pixelsPerSecond) {
-		
+		centerY = centerY + pixelsPerSecond / 60;
 	}
 
-	@Override
 	public void stop() {
-		// TODO Auto-generated method stub
-		
+	
 	}
 
-	@Override
 	public Image getImage() {
-		// TODO Auto-generated method stub
-		return null;
+		return image;
 	}
 
-	@Override
 	public boolean getVisible() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
+	}
+
+	public double getMinX() {
+		return centerX - (width / 2);
+	}
+
+	public double getMaxX() {
+		return centerX + (width / 2);
+	}
+
+	public double getMinY() {
+		return centerY - (height / 2);
+	}
+
+	public double getMaxY() {
+		return centerY + (height / 2);
 	}
 
 	public double getCenterX() {
@@ -93,16 +87,12 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 		return centerY;
 	}
 
-	@Override
 	public boolean getDispose() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public void update(Universe universe, KeyboardInput keyboard, long actual_delta_time) {
-		// TODO Auto-generated method stub
 		
-	}
+	}	
 	
 }
