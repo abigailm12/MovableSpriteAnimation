@@ -6,13 +6,13 @@ import javax.imageio.ImageIO;
 
 public class APMSprite implements DisplayableSprite, MovableSprite {
 
-	Image image = null;
-	double centerX = 0;
-	double centerY = 0;
-	double height = 50;
-	double width = 50;
-	double velocityX = 0;
-	double velocityY = 0;
+	private static Image image = null;
+	private double centerX = 0;
+	private double centerY = 0;
+	private double height = 50;
+	private double width = 50;
+	private double velocityX = 0;
+	private double velocityY = 0;
 	
 	public APMSprite() {
 		super();
@@ -23,7 +23,7 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 			}
 			catch (IOException e) {
 				System.out.println(e.toString());
-			}		
+			}	
 		}		
 	}
 
@@ -44,11 +44,11 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	}	
 
 	public void moveX(double pixelsPerSecond) {
-		centerX = centerX + pixelsPerSecond / 60;
+		velocityX = pixelsPerSecond;
 	}
 
 	public void moveY(double pixelsPerSecond) {
-		centerY = centerY + pixelsPerSecond / 60;
+		velocityY = pixelsPerSecond;
 	}
 
 	public void stop() {
@@ -92,7 +92,10 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	}
 
 	public void update(Universe universe, KeyboardInput keyboard, long actual_delta_time) {
-		
+		double deltaX = velocityX * actual_delta_time * 0.001;
+		double deltaY = velocityY * actual_delta_time * 0.001;
+		centerX += deltaX;
+		centerY += deltaY;
 	}	
 	
 }
