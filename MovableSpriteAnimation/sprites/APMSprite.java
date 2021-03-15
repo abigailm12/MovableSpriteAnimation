@@ -9,10 +9,13 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	private static Image image = null;
 	private double centerX = 0;
 	private double centerY = 0;
+	private double deltaX = 0;
+	private double deltaY = 0;
 	private double height = 50;
 	private double width = 50;
 	private double velocityX = 0;
 	private double velocityY = 0;
+	private int angle = 90;
 	
 	public APMSprite() {
 		super();
@@ -52,11 +55,21 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	}
 
 	public void stop() {
-	
 	}
 
 	public Image getImage() {
-		return image;
+		
+		if (deltaX > 0) {
+			angle++;
+		} else if (deltaX < 0) {
+			angle--;
+		} else if (deltaY > 0) {
+			angle++;
+		}  else if (deltaY < 0) {
+			angle--;
+		}
+		
+		return ImageRotator.rotate(image, angle);
 	}
 
 	public boolean getVisible() {
@@ -92,8 +105,8 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	}
 
 	public void update(Universe universe, KeyboardInput keyboard, long actual_delta_time) {
-		double deltaX = velocityX * actual_delta_time * 0.001;
-		double deltaY = velocityY * actual_delta_time * 0.001;
+		deltaX = velocityX * actual_delta_time * 0.001;
+		deltaY = velocityY * actual_delta_time * 0.001;
 		centerX += deltaX;
 		centerY += deltaY;
 	}	
