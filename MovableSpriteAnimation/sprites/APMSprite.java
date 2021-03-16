@@ -16,6 +16,7 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	private double velocityX = 0;
 	private double velocityY = 0;
 	private int angle = 90;
+	private boolean spinForward = true;
 	
 	public APMSprite() {
 		super();
@@ -47,25 +48,29 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	}	
 
 	public void moveX(double pixelsPerSecond) {
-		velocityX = pixelsPerSecond;
+		this.velocityX = pixelsPerSecond;
 	}
 
 	public void moveY(double pixelsPerSecond) {
-		velocityY = pixelsPerSecond;
+		this.velocityY = pixelsPerSecond;
 	}
 
 	public void stop() {
+		this.velocityX = 0;
+		this.velocityY = 0;
 	}
 
 	public Image getImage() {
 		
 		if (deltaX > 0) {
-			angle++;
+			spinForward = true;
 		} else if (deltaX < 0) {
-			angle--;
-		} else if (deltaY > 0) {
+			spinForward = false;
+		}
+		
+		if (spinForward == true) {
 			angle++;
-		}  else if (deltaY < 0) {
+		} else {
 			angle--;
 		}
 		
