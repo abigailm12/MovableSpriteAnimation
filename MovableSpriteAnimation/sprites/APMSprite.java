@@ -23,7 +23,14 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 
 		if (image == null) {
 			try {
-				image = ImageIO.read(new File("res/apm/astronaut.png"));
+				image = ImageIO.read(new File("res/apm/character.png"));
+				
+				/*images = new Image[8];
+				for (int i = 0; i < 8; i++) {
+					String path = String.format("res/apm/animation-%d.gif", i);
+					images[i] = ImageIO.read(new File(path));
+				}*/
+			
 			}
 			catch (IOException e) {
 				System.out.println(e.toString());
