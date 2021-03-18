@@ -6,6 +6,10 @@ import javax.imageio.ImageIO;
 
 public class APMSprite implements DisplayableSprite, MovableSprite {
 
+	private static Image image0 = null;
+	private static Image image1 = null;
+	private static Image image2 = null;
+	private static Image image3 = null;
 	private static Image image = null;
 	private double centerX = 0;
 	private double centerY = 0;
@@ -17,25 +21,23 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	private double velocityY = 0;
 	private int angle = 90;
 	private boolean spinForward = true;
+	private int direction = 0; //0 = down; 1 = left; 2 = up; 3 = right 
 	
 	public APMSprite() {
 		super();
 
-		if (image == null) {
+		if (image0 == null) {
 			try {
-				image = ImageIO.read(new File("res/apm/character.png"));
-				
-				/*images = new Image[8];
-				for (int i = 0; i < 8; i++) {
-					String path = String.format("res/apm/animation-%d.gif", i);
-					images[i] = ImageIO.read(new File(path));
-				}*/
-			
+				image0 = ImageIO.read(new File("res/apm/sprite/sprite0.jpg"));
+				image1 = ImageIO.read(new File("res/apm/sprite/sprite1.jpg"));
+				image2 = ImageIO.read(new File("res/apm/sprite/sprite2.jpg"));
+				image3 = ImageIO.read(new File("res/apm/sprite/sprite3.jpg"));
 			}
 			catch (IOException e) {
 				System.out.println(e.toString());
 			}	
-		}		
+		}
+		
 	}
 
 	public void setCenterX(double centerX) {
@@ -47,11 +49,13 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	}
 	
 	public double getHeight() {
-		return height;
+		//return height;
+		return image0.getHeight(null);
 	}
 
 	public double getWidth() {
-		return width;
+		//return width;
+		return image0.getWidth(null);
 	}	
 
 	public void moveX(double pixelsPerSecond) {
@@ -69,6 +73,7 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 
 	public Image getImage() {
 		
+		/* spinning astronaut
 		if (deltaX > 0) {
 			spinForward = true;
 		} else if (deltaX < 0) {
@@ -79,9 +84,30 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 			angle++;
 		} else {
 			angle--;
+		}*/
+		if (velocityX < 0) {
+			direction = 1;
+		} else if (velocityX > 0){
+			direction = 3;
+		} else if (velocityY > 0) {
+			direction = 0;
+		} else if (velocityY < 0) {
+			direction = 2;
 		}
 		
-		return ImageRotator.rotate(image, angle);
+		if (direction == 1) {
+			image = image1;
+		} else if (direction == 0) {
+			image = image0;
+		} else if (direction == 2) {
+			image = image2;
+		} else if (direction == 3) {
+			image = image3;
+		}
+		
+		//return ImageRotator.rotate(image, angle);
+		return image;
+		
 	}
 
 	public boolean getVisible() {
