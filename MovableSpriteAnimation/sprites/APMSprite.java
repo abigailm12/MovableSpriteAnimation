@@ -6,11 +6,10 @@ import javax.imageio.ImageIO;
 
 public class APMSprite implements DisplayableSprite, MovableSprite {
 
+	private static final long VELOCITY = 0;
 	private static Image image0 = null;
-	private static Image image1 = null;
-	private static Image image2 = null;
-	private static Image image3 = null;
-	private static Image image = null;
+	private static Image images[] = null;
+	private long elapsedTime = 0;
 	private double centerX = 0;
 	private double centerY = 0;
 	private double deltaX = 0;
@@ -19,25 +18,37 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	private double width = 50;
 	private double velocityX = 0;
 	private double velocityY = 0;
-	private int angle = 90;
-	private boolean spinForward = true;
-	private int direction = 0; //0 = down; 1 = left; 2 = up; 3 = right 
+	private int directionNum = 0; //0 = down; 1 = left; 2 = up; 3 = right 
 	
 	public APMSprite() {
 		super();
 
 		if (image0 == null) {
-			try {
-				image0 = ImageIO.read(new File("res/apm/sprite/sprite0.jpg"));
-				image1 = ImageIO.read(new File("res/apm/sprite/sprite1.jpg"));
-				image2 = ImageIO.read(new File("res/apm/sprite/sprite2.jpg"));
-				image3 = ImageIO.read(new File("res/apm/sprite/sprite3.jpg"));
+			try {				
+				images = new Image[7];
+				for (int i = 0; i < 7; i++) {
+					String path = String.format("res/apm/bee_%s_%d.png", getDirection(directionNum), i);
+					images[i] = ImageIO.read(new File(path));
+				}
 			}
 			catch (IOException e) {
 				System.out.println(e.toString());
 			}	
 		}
 		
+	}
+	
+	public String getDirection(int x) {
+		String direction = "left";
+		if (x == 1) {
+			direction = "left";
+		} else if (x == 2) {
+			direction = "right";				
+		} else if (x == 3) {
+			direction = "right";
+		}
+		
+		return direction;
 	}
 
 	public void setCenterX(double centerX) {
@@ -49,13 +60,11 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	}
 	
 	public double getHeight() {
-		//return height;
-		return image0.getHeight(null);
+		return height;
 	}
 
 	public double getWidth() {
-		//return width;
-		return image0.getWidth(null);
+		return width;
 	}	
 
 	public void moveX(double pixelsPerSecond) {
@@ -73,40 +82,17 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 
 	public Image getImage() {
 		
-		/* spinning astronaut
 		if (deltaX > 0) {
-			spinForward = true;
+			this.directionNum = 1;
 		} else if (deltaX < 0) {
-			spinForward = false;
+			this.directionNum = 3;
 		}
 		
-		if (spinForward == true) {
-			angle++;
-		} else {
-			angle--;
-		}*/
-		if (velocityX < 0) {
-			direction = 1;
-		} else if (velocityX > 0){
-			direction = 3;
-		} else if (velocityY > 0) {
-			direction = 0;
-		} else if (velocityY < 0) {
-			direction = 2;
-		}
+		long frame = elapsedTime / 175;
+		int phase = (int) (frame % 2);
+		int index = directionNum * 2 + phase;
 		
-		if (direction == 1) {
-			image = image1;
-		} else if (direction == 0) {
-			image = image0;
-		} else if (direction == 2) {
-			image = image2;
-		} else if (direction == 3) {
-			image = image3;
-		}
-		
-		//return ImageRotator.rotate(image, angle);
-		return image;
+		return images[index];
 		
 	}
 
@@ -147,6 +133,10 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 		deltaY = velocityY * actual_delta_time * 0.001;
 		centerX += deltaX;
 		centerY += deltaY;
+		
+		elapsedTime += actual_delta_time;
+		
+
 	}	
 	
 }
