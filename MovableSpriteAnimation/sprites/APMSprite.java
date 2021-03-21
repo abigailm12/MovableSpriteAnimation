@@ -6,7 +6,6 @@ import javax.imageio.ImageIO;
 
 public class APMSprite implements DisplayableSprite, MovableSprite {
 
-	private static final long VELOCITY = 0;
 	private static Image image0 = null;
 	private static Image images[] = null;
 	private long elapsedTime = 0;
@@ -18,16 +17,16 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	private double width = 50;
 	private double velocityX = 0;
 	private double velocityY = 0;
-	private int directionNum = 0; //0 = down; 1 = left; 2 = up; 3 = right 
+	private int direction = 1; //1 = left; 2 = right
 	
 	public APMSprite() {
 		super();
 
 		if (image0 == null) {
 			try {				
-				images = new Image[7];
-				for (int i = 0; i < 7; i++) {
-					String path = String.format("res/apm/bee_%s_%d.png", getDirection(directionNum), i);
+				images = new Image[9];
+				for (int i = 0; i < 9; i++) {
+					String path = String.format("res/apm/bumblebee_%d/bee_%d-%d.png", direction, direction, i);
 					images[i] = ImageIO.read(new File(path));
 				}
 			}
@@ -82,15 +81,15 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 
 	public Image getImage() {
 		
-		if (deltaX > 0) {
-			this.directionNum = 1;
-		} else if (deltaX < 0) {
-			this.directionNum = 3;
+		if (deltaX < 0) {
+			this.direction = 2;
+		} else if (deltaX > 0) {
+			this.direction = 1;
 		}
 		
-		long frame = elapsedTime / 175;
+		long frame = elapsedTime / 250;
 		int phase = (int) (frame % 2);
-		int index = directionNum * 2 + phase;
+		int index = direction * 2 + phase;
 		
 		return images[index];
 		
