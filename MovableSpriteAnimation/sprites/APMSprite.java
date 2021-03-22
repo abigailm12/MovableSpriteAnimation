@@ -6,28 +6,33 @@ import javax.imageio.ImageIO;
 
 public class APMSprite implements DisplayableSprite, MovableSprite {
 
-	private static Image image0 = null;
-	private static Image images[] = null;
+	private static Image[] imageLeft = null;
+	private static Image[] imageRight = null;
 	private long elapsedTime = 0;
 	private double centerX = 0;
 	private double centerY = 0;
 	private double deltaX = 0;
 	private double deltaY = 0;
-	private double height = 50;
-	private double width = 50;
+	private double height = 60;
+	private double width = 60;
 	private double velocityX = 0;
 	private double velocityY = 0;
-	private int direction = 1; //1 = left; 2 = right
+	private int direction = 2; //1 = left; 2 = right
 	
 	public APMSprite() {
 		super();
 
-		if (image0 == null) {
+		if (imageLeft == null) {
 			try {				
-				images = new Image[9];
+				imageLeft = new Image[9];
 				for (int i = 0; i < 9; i++) {
-					String path = String.format("res/apm/bumblebee_%d/bee_%d-%d.png", direction, direction, i);
-					images[i] = ImageIO.read(new File(path));
+					String path = String.format("res/apm/bee_left-%d.png", i);
+					imageLeft[i] = ImageIO.read(new File(path));
+				}
+				imageRight = new Image[9];
+				for (int i = 0; i < 9; i++) {
+					String path = String.format("res/apm/bee_right-%d.png", i);
+					imageRight[i] = ImageIO.read(new File(path));
 				}
 			}
 			catch (IOException e) {
@@ -37,19 +42,6 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 		
 	}
 	
-	public String getDirection(int x) {
-		String direction = "left";
-		if (x == 1) {
-			direction = "left";
-		} else if (x == 2) {
-			direction = "right";				
-		} else if (x == 3) {
-			direction = "right";
-		}
-		
-		return direction;
-	}
-
 	public void setCenterX(double centerX) {
 		this.centerX = centerX;	
 	}
@@ -79,19 +71,25 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 		this.velocityY = 0;
 	}
 
-	public Image getImage() {
-		
+	public Image getImage() {		
 		if (deltaX < 0) {
-			this.direction = 2;
-		} else if (deltaX > 0) {
 			this.direction = 1;
+		} else if (deltaX > 0) {
+			this.direction = 2;
 		}
 		
-		long frame = elapsedTime / 250;
-		int phase = (int) (frame % 2);
-		int index = direction * 2 + phase;
+		long frame = elapsedTime / 50;
+		int index = (int) frame % 9;
 		
-		return images[index];
+		Image output = null;
+		
+		if (direction == 2) {
+			output = imageRight[index];
+		} else if (direction == 1) {
+			output = imageLeft[index];
+		} 
+		
+		return output;
 		
 	}
 
