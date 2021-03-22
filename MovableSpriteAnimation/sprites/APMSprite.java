@@ -13,8 +13,8 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	private double centerY = 0;
 	private double deltaX = 0;
 	private double deltaY = 0;
-	private double height = 60;
-	private double width = 60;
+	private double height = 50;
+	private double width = 50;
 	private double velocityX = 0;
 	private double velocityY = 0;
 	private int direction = 2; //1 = left; 2 = right
@@ -78,7 +78,7 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 			this.direction = 2;
 		}
 		
-		long frame = elapsedTime / 50;
+		long frame = elapsedTime / 100;
 		int index = (int) frame % 9;
 		
 		Image output = null;
