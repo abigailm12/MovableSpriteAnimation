@@ -6,6 +6,9 @@ import javax.imageio.ImageIO;
 
 public class APMSprite implements DisplayableSprite, MovableSprite {
 
+	private static final int FPS = 45; //not really frames per second, 
+									//i don't know how the math works
+	
 	private static Image[] imageLeft = null;
 	private static Image[] imageRight = null;
 	private long elapsedTime = 0;
@@ -78,7 +81,7 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 			this.direction = 2;
 		}
 		
-		long frame = elapsedTime / 100;
+		long frame = elapsedTime / FPS;
 		int index = (int) frame % 9;
 		
 		Image output = null;
