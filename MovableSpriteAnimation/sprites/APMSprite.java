@@ -6,9 +6,9 @@ import javax.imageio.ImageIO;
 
 public class APMSprite implements DisplayableSprite, MovableSprite {
 
-	private static final int FPS = 45; //not really frames per second, 
-									//i don't know how the math works
-	
+	private static final int FRAMES = 9;
+	private static int framesPerSecond = 20;
+	private static int millisecondsPerFrame = 1000 / framesPerSecond;
 	private static Image[] imageLeft = null;
 	private static Image[] imageRight = null;
 	private long elapsedTime = 0;
@@ -27,13 +27,13 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 
 		if (imageLeft == null) {
 			try {				
-				imageLeft = new Image[9];
-				for (int i = 0; i < 9; i++) {
+				imageLeft = new Image[FRAMES];
+				for (int i = 0; i < FRAMES; i++) {
 					String path = String.format("res/apm/bee_left-%d.png", i);
 					imageLeft[i] = ImageIO.read(new File(path));
 				}
-				imageRight = new Image[9];
-				for (int i = 0; i < 9; i++) {
+				imageRight = new Image[FRAMES];
+				for (int i = 0; i < FRAMES; i++) {
 					String path = String.format("res/apm/bee_right-%d.png", i);
 					imageRight[i] = ImageIO.read(new File(path));
 				}
@@ -75,21 +75,20 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	}
 
 	public Image getImage() {		
+		Image output = null;
+		long frame = elapsedTime / millisecondsPerFrame;
+		int index = (int) frame % FRAMES;
+				
 		if (deltaX < 0) {
 			this.direction = 1;
 		} else if (deltaX > 0) {
 			this.direction = 2;
 		}
 		
-		long frame = elapsedTime / FPS;
-		int index = (int) frame % 9;
-		
-		Image output = null;
-		
-		if (direction == 2) {
-			output = imageRight[index];
-		} else if (direction == 1) {
+		if (direction == 1) {
 			output = imageLeft[index];
+		} else if (direction == 2) {
+			output = imageRight[index];
 		} 
 		
 		return output;
@@ -129,14 +128,13 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	}
 
 	public void update(Universe universe, KeyboardInput keyboard, long actual_delta_time) {
-		deltaX = velocityX * actual_delta_time * 0.001;
-		deltaY = velocityY * actual_delta_time * 0.001;
-		centerX += deltaX;
-		centerY += deltaY;
-		
 		elapsedTime += actual_delta_time;
 		
-
+		deltaX = velocityX * actual_delta_time * 0.001;
+		deltaY = velocityY * actual_delta_time * 0.001;
+		
+		centerX += deltaX;
+		centerY += deltaY;	
 	}	
 	
 }
