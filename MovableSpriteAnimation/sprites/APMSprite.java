@@ -1,4 +1,4 @@
-import java.awt.Image;
+import java.awt.Image; 
 import java.io.File;
 import java.io.IOException;
 
@@ -130,11 +130,37 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	public void update(Universe universe, KeyboardInput keyboard, long actual_delta_time) {
 		elapsedTime += actual_delta_time;
 		
-		deltaX = velocityX * actual_delta_time * 0.001;
-		deltaY = velocityY * actual_delta_time * 0.001;
+		//deltaX = velocityX * actual_delta_time * 0.001;
+		//deltaY = velocityY * actual_delta_time * 0.001;
 		
-		centerX += deltaX;
-		centerY += deltaY;	
+		deltaX = velocityX * actual_delta_time * 0.001;
+		if (checkCollision(universe, deltaX, 0) == false) {
+			centerX += deltaX;
+		}
+		
+		deltaY = velocityY * actual_delta_time * 0.001;
+		if (checkCollision(universe, 0, deltaY) == false) {
+			centerY += deltaY;
+		}
+		
 	}	
 	
+	
+	public boolean checkCollision(Universe sprites, double deltaX, double deltaY) {
+
+		boolean colliding = false;
+
+		for (DisplayableSprite sprite : sprites.getSprites()) {
+			if (sprite instanceof GroundSprite) {
+				if (CollisionDetection.overlaps(this.getMinX() + deltaX, this.getMinY() + deltaY, 
+						this.getMaxX()  + deltaX, this.getMaxY() + deltaY, 
+						sprite.getMinX(),sprite.getMinY(), 
+						sprite.getMaxX(), sprite.getMaxY())) {
+					colliding = true;
+					break;					
+				}
+			}
+		}		
+		return colliding;		
+	}
 }
