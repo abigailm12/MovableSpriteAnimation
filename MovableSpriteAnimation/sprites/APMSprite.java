@@ -21,6 +21,7 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	private double velocityX = 0;
 	private double velocityY = 0;
 	private int direction = 2; //1 = left; 2 = right
+	private static int points = 0;
 	
 	public APMSprite() {
 		super();
@@ -126,6 +127,10 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	public boolean getDispose() {
 		return false;
 	}
+	
+	public static int getPoints() {
+		return points;
+	}
 
 	public void update(Universe universe, KeyboardInput keyboard, long actual_delta_time) {
 		elapsedTime += actual_delta_time;
@@ -134,33 +139,52 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 		//deltaY = velocityY * actual_delta_time * 0.001;
 		
 		deltaX = velocityX * actual_delta_time * 0.001;
-		if (checkCollision(universe, deltaX, 0) == false) {
+		if (checkCollision(universe, "GroundSprite", deltaX, 0) == false) {
 			centerX += deltaX;
 		}
 		
 		deltaY = velocityY * actual_delta_time * 0.001;
-		if (checkCollision(universe, 0, deltaY) == false) {
+		if (checkCollision(universe, "GroundSprite", 0, deltaY) == false) {
 			centerY += deltaY;
+		}
+		
+		if (checkCollision(universe, "FlowerSprite", centerX, centerY) == true) {
+			points++;
 		}
 		
 	}	
 	
 	
-	public boolean checkCollision(Universe sprites, double deltaX, double deltaY) {
+	public boolean checkCollision(Universe sprites, String instance, double deltaX, double deltaY) {
 
+		
 		boolean colliding = false;
-
+		
 		for (DisplayableSprite sprite : sprites.getSprites()) {
-			if (sprite instanceof GroundSprite) {
-				if (CollisionDetection.overlaps(this.getMinX() + deltaX, this.getMinY() + deltaY, 
-						this.getMaxX()  + deltaX, this.getMaxY() + deltaY, 
-						sprite.getMinX(),sprite.getMinY(), 
-						sprite.getMaxX(), sprite.getMaxY())) {
-					colliding = true;
-					break;					
+
+			if (instance == "GroundSprite") {
+				if (sprite instanceof GroundSprite) {
+					if (CollisionDetection.overlaps(this.getMinX() + deltaX, this.getMinY() + deltaY, 
+							this.getMaxX()  + deltaX, this.getMaxY() + deltaY, 
+							sprite.getMinX(),sprite.getMinY(), 
+							sprite.getMaxX(), sprite.getMaxY())) {
+						colliding = true;
+						break;					
+					}
 				}
-			}
-		}		
+			} else if (instance == "FlowerSprite") {
+				if (sprite instanceof FlowerSprite) {
+					if (CollisionDetection.overlaps(this.getMinX() + deltaX, this.getMinY() + deltaY, 
+							this.getMaxX()  + deltaX, this.getMaxY() + deltaY, 
+							sprite.getMinX(),sprite.getMinY(), 
+							sprite.getMaxX(), sprite.getMaxY()) && FlowerSprite.getPollination() == false) {
+						colliding = true;
+						FlowerSprite.setPollination(true);
+						break;					
+					}
+				}
+			}	
+		}
 		return colliding;		
 	}
 }
