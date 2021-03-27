@@ -20,7 +20,6 @@ public interface Universe {
 	
 	public Background getBackground();
 	public DisplayableSprite getPlayer1();
-	public DisplayableSprite getGround();
 	public boolean centerOnPlayer();
 
 	public ArrayList<DisplayableSprite> getSprites();	

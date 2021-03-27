@@ -135,56 +135,11 @@ public class APMSprite implements DisplayableSprite, MovableSprite {
 	public void update(Universe universe, KeyboardInput keyboard, long actual_delta_time) {
 		elapsedTime += actual_delta_time;
 		
-		//deltaX = velocityX * actual_delta_time * 0.001;
-		//deltaY = velocityY * actual_delta_time * 0.001;
-		
 		deltaX = velocityX * actual_delta_time * 0.001;
-		if (checkCollision(universe, "GroundSprite", deltaX, 0) == false) {
-			centerX += deltaX;
-		}
+		deltaY = velocityY * actual_delta_time * 0.001;		
 		
-		deltaY = velocityY * actual_delta_time * 0.001;
-		if (checkCollision(universe, "GroundSprite", 0, deltaY) == false) {
-			centerY += deltaY;
-		}
-		
-		if (checkCollision(universe, "FlowerSprite", centerX, centerY) == true) {
-			points++;
-		}
-		
+		centerX += deltaX;
+		centerY += deltaY;
 	}	
-	
-	
-	public boolean checkCollision(Universe sprites, String instance, double deltaX, double deltaY) {
-
 		
-		boolean colliding = false;
-		
-		for (DisplayableSprite sprite : sprites.getSprites()) {
-
-			if (instance == "GroundSprite") {
-				if (sprite instanceof GroundSprite) {
-					if (CollisionDetection.overlaps(this.getMinX() + deltaX, this.getMinY() + deltaY, 
-							this.getMaxX()  + deltaX, this.getMaxY() + deltaY, 
-							sprite.getMinX(),sprite.getMinY(), 
-							sprite.getMaxX(), sprite.getMaxY())) {
-						colliding = true;
-						break;					
-					}
-				}
-			} else if (instance == "FlowerSprite") {
-				if (sprite instanceof FlowerSprite) {
-					if (CollisionDetection.overlaps(this.getMinX() + deltaX, this.getMinY() + deltaY, 
-							this.getMaxX()  + deltaX, this.getMaxY() + deltaY, 
-							sprite.getMinX(),sprite.getMinY(), 
-							sprite.getMaxX(), sprite.getMaxY()) && FlowerSprite.getPollination() == false) {
-						colliding = true;
-						FlowerSprite.setPollination(true);
-						break;					
-					}
-				}
-			}	
-		}
-		return colliding;		
-	}
 }
